@@ -20,7 +20,8 @@
 
         <service
             android:name="com.fullsekurity.remoteserviceserver.BoundService"
-            android:process=":fullsekurity_process">
+            android:process=":fs_process"
+            android:exported="true" >
         </service>
     </application>
 

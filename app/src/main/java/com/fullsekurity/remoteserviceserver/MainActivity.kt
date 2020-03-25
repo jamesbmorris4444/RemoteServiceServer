@@ -29,36 +29,26 @@ class MainActivity : AppCompatActivity() {
         startServiceButon.setOnClickListener {
             val intent = Intent(this@MainActivity, BoundService::class.java)
             startService(intent)
-            bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE)
+//            bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE)
         }
         printTimestampButton.setOnClickListener {
             if (mServiceConnected) {
                 try {
-                    val msg = Message.obtain(null,
-                            BoundService.MSG_GET_TIMESTAMP, 0, 0)
+                    val msg = Message.obtain(null, BoundService.MSG_GET_TIMESTAMP)
                     msg.replyTo = mActivityMessenger
-                    mBoundServiceMessenger!!.send(msg)
+                    mBoundServiceMessenger?.send(msg)
                 } catch (e: RemoteException) {
                     e.printStackTrace()
                 }
             }
         }
         stopServiceButon.setOnClickListener {
-            if (mServiceConnected) {
-                unbindService(mServiceConnection)
-                mServiceConnected = false
-            }
-            val intent = Intent(this@MainActivity,
-                    BoundService::class.java)
+//            if (mServiceConnected) {
+//                unbindService(mServiceConnection)
+//                mServiceConnected = false
+//            }
+            val intent = Intent(this@MainActivity, BoundService::class.java)
             stopService(intent)
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (mServiceConnected) {
-            unbindService(mServiceConnection)
-            mServiceConnected = false
         }
     }
 

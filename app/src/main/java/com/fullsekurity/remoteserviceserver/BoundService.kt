@@ -3,6 +3,7 @@ package com.fullsekurity.remoteserviceserver
 import android.app.Service
 import android.content.Intent
 import android.os.*
+import android.util.Log
 import android.widget.Chronometer
 import java.lang.ref.WeakReference
 
@@ -16,7 +17,7 @@ class BoundService : Service() {
             when (msg.what) {
                 MSG_GET_TIMESTAMP -> {
                     mService.get()?. let {
-                        val elapsedMillis = (SystemClock.elapsedRealtime() - mService.get()!!.mChronometer!!.base)
+                        val elapsedMillis = (SystemClock.elapsedRealtime() - mService.get()?.mChronometer!!.base)
                         val hours = (elapsedMillis / 3600000).toInt()
                         val minutes = (elapsedMillis - hours * 3600000).toInt() / 60000
                         val seconds = (elapsedMillis - hours * 3600000 - (minutes * 60000)).toInt() / 1000
@@ -47,10 +48,6 @@ class BoundService : Service() {
 
     override fun onBind(intent: Intent): IBinder {
         return mMessenger.binder
-    }
-
-    override fun onRebind(intent: Intent) {
-        super.onRebind(intent)
     }
 
     override fun onUnbind(intent: Intent): Boolean {
